@@ -17,6 +17,10 @@ namespace MTGMythicScraper
 
         static void Main(string[] args)
         {
+
+            (new ScraperMainForm()).ShowDialog();
+            return;
+
             string sourceCode = "";
             string siteUrl = "http://mythicspoiler.com/";
             var options = new CommandLineOptions();

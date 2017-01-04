@@ -18,12 +18,12 @@ namespace MTGMythicScraper
         public int cmc { get; set; }
         public string type { get; set; }
         public string pt { get; set; }
-        public int tablerow { get; set; } = 2;
+        //public int tablerow { get; set; } = 2;
         public string text { get; set; }
 
         public override string ToString()
         {
-            return $"Name:{name} ManaCost: {manacost}";
+            return $"{manacost} {name}";
         }
 
 
