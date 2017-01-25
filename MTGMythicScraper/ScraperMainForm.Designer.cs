@@ -50,13 +50,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.propertyGrid.Location = new System.Drawing.Point(436, 2);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(307, 577);
+            this.propertyGrid.Size = new System.Drawing.Size(310, 577);
             this.propertyGrid.TabIndex = 0;
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(247, 332);
+            this.pictureBox1.Location = new System.Drawing.Point(250, 332);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(178, 247);
             this.pictureBox1.TabIndex = 1;
@@ -64,7 +64,7 @@
             // 
             // textBoxSet
             // 
-            this.textBoxSet.Location = new System.Drawing.Point(252, 28);
+            this.textBoxSet.Location = new System.Drawing.Point(255, 28);
             this.textBoxSet.Name = "textBoxSet";
             this.textBoxSet.Size = new System.Drawing.Size(178, 20);
             this.textBoxSet.TabIndex = 2;
@@ -72,7 +72,7 @@
             // labelSet
             // 
             this.labelSet.AutoSize = true;
-            this.labelSet.Location = new System.Drawing.Point(252, 9);
+            this.labelSet.Location = new System.Drawing.Point(255, 9);
             this.labelSet.Name = "labelSet";
             this.labelSet.Size = new System.Drawing.Size(23, 13);
             this.labelSet.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             // buttonScanPage
             // 
-            this.buttonScanPage.Location = new System.Drawing.Point(252, 55);
+            this.buttonScanPage.Location = new System.Drawing.Point(255, 55);
             this.buttonScanPage.Name = "buttonScanPage";
             this.buttonScanPage.Size = new System.Drawing.Size(178, 23);
             this.buttonScanPage.TabIndex = 4;
@@ -90,7 +90,7 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(252, 84);
+            this.buttonExport.Location = new System.Drawing.Point(255, 84);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(178, 23);
             this.buttonExport.TabIndex = 5;
@@ -133,7 +133,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(252, 139);
+            this.progressBar.Location = new System.Drawing.Point(255, 139);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(178, 23);
             this.progressBar.TabIndex = 10;
@@ -141,7 +141,7 @@
             // labelPercent
             // 
             this.labelPercent.AutoSize = true;
-            this.labelPercent.Location = new System.Drawing.Point(327, 120);
+            this.labelPercent.Location = new System.Drawing.Point(330, 120);
             this.labelPercent.Name = "labelPercent";
             this.labelPercent.Size = new System.Drawing.Size(21, 13);
             this.labelPercent.TabIndex = 11;
@@ -150,7 +150,7 @@
             // buttonCancel
             // 
             this.buttonCancel.Enabled = false;
-            this.buttonCancel.Location = new System.Drawing.Point(252, 168);
+            this.buttonCancel.Location = new System.Drawing.Point(255, 168);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(178, 23);
             this.buttonCancel.TabIndex = 12;
@@ -162,7 +162,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(755, 591);
+            this.ClientSize = new System.Drawing.Size(758, 591);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.labelPercent);
             this.Controls.Add(this.progressBar);

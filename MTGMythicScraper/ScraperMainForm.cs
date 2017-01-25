@@ -48,14 +48,25 @@ namespace MTGMythicScraper
                 sourceCode = client.DownloadString("http://mythicspoiler.com/" + Set + "/");
             }
 
-
+            
             var result = Linkscraper.Find(sourceCode);
             Console.WriteLine($"found {result.Count} cards");
+
+            propertyGrid.SelectedObject = null;
+            listView1.Items.Clear();
+            foreach (var c in Cards)
+            {
+                c.PropertyChanged -= CardChanged;
+            }
 
             GetCards(result);
 
         }
 
+        private void CardChanged(object sender, PropertyChangedEventArgs e)
+        {
+            FillList();
+        }
 
         private async void  GetCards(List<CardLink> links)
         {
@@ -78,6 +89,8 @@ namespace MTGMythicScraper
                        break;
 
                    string cardPage = "";
+                   var img = siteUrl + Set + "/" + link.ImgUrl;
+
                    string tempUrl = siteUrl + textBoxSet.Text + "/" + link.Url;
                    try
                    {
@@ -85,13 +98,13 @@ namespace MTGMythicScraper
                        {
                            cardPage = client.DownloadString(tempUrl);
 
-                           var card = Cardscaper.Scrape(cardPage, Set, siteUrl + Set + "/" + link.ImgUrl);
-
-                           if (string.IsNullOrEmpty(card.name))
+                           var card = Cardscaper.Scrape(cardPage, Set,img);
+                           
+                           if (string.IsNullOrEmpty(card.Name))
                            {
                                Console.WriteLine("Error for: " + link.Url);
 
-                               var c = new Card() { name = "Error: " + link.Url.Split('/', '.')[1] };
+                               var c = new Card() { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set= Set };
                                Cards.Add(c);
                                TempAddCard(c);
 
@@ -106,7 +119,7 @@ namespace MTGMythicScraper
                    {
                        Console.WriteLine("Timout for Error for: " + link.Url);
 
-                       var c = new Card() { name = "Error: " + link.Url.Split('/', '.')[1] };
+                       var c = new Card() { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set = Set };
                        Cards.Add(c);
                        TempAddCard(c);
 
@@ -125,7 +138,15 @@ namespace MTGMythicScraper
            }, tokenSource.Token);
 
             Console.WriteLine("100%");
+            progressBar.Value = progressBar.Maximum;
+            labelPercent.Text = "Done.";
+
             buttonCancel.Enabled = false;
+
+            foreach (var c in Cards)
+            {
+                c.PropertyChanged += CardChanged;
+            }
 
             FillList();
             buttonExport.Enabled = buttonScanPage.Enabled = true;
@@ -140,7 +161,7 @@ namespace MTGMythicScraper
             }
             else
             {
-                listView1.Items.Add(new ListViewItem(card.name) { Tag = card });
+                listView1.Items.Add(new ListViewItem(card.Name) { Tag = card });
             }           
         }
 
@@ -148,7 +169,7 @@ namespace MTGMythicScraper
         {
             propertyGrid.SelectedObject = null;
             listView1.Items.Clear();
-            var ordered = Cards.OrderBy(c => c.name).Select(c => new ListViewItem(c.name) { Tag = c }).ToArray();
+            var ordered = Cards.OrderBy(c => c.Name).Select(c => new ListViewItem(c.Name) { Tag = c }).ToArray();
             listView1.Items.AddRange(ordered);
         }
 
@@ -161,7 +182,7 @@ namespace MTGMythicScraper
             else
             {
                 this.progressBar.PerformStep();
-                labelPercent.Text = $"{progressBar.Value}%";
+                labelPercent.Text = $"{progressBar.Value}/{progressBar.Maximum}";
             }
         }
 
@@ -190,7 +211,7 @@ namespace MTGMythicScraper
 
                 foreach (var card in Cards)
                 {
-                    if (card.name.StartsWith("Error:"))
+                    if (card.Name.StartsWith("Error:"))
                         continue;
 
                     card.Serialize(writer);

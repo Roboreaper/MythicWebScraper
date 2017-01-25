@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,10 +8,11 @@ using System.Xml;
 
 namespace MTGMythicScraper
 {
-    public class Card
-    {       
+    public class Card : INotifyPropertyChanged
+    {
+        private string name;
+        public string Name { get { return name; } set { name = value; NameChanged(); } }
 
-        public string name { get; set; }
         public string set { get; set; }
         public string ImageUrl { get; set; }
         public string color { get; set; }
@@ -20,6 +22,13 @@ namespace MTGMythicScraper
         public string pt { get; set; }
         //public int tablerow { get; set; } = 2;
         public string text { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void NameChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("name"));
+        }
 
         public override string ToString()
         {

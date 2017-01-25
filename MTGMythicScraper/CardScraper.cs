@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MTGMythicScraper
@@ -78,11 +79,13 @@ namespace MTGMythicScraper
         private void processTexBlob(ref Card card ,string currentTag , string txtBlob)
         {
             var temp = txtBlob.Trim();
+            temp = temp.Trim(new Char[] { '"' });
 
             switch (currentTag)
             {
                 case Tagname:
-                    card.name = temp;
+                    //card.name = temp;
+                    card.Name = Regex.Match(temp, @"(?i)^[a-z ,'-_]+").Value;
                     break;
                 case Tagmanacost:
                     card.manacost = temp;

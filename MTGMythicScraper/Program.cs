@@ -60,7 +60,7 @@ namespace MTGMythicScraper
                         cardPage = client.DownloadString(tempUrl);
 
                         var card = cs.Scrape(cardPage, options.Set, siteUrl + options.Set + "/" + link.ImgUrl);
-                        if (string.IsNullOrEmpty(card.name))
+                        if (string.IsNullOrEmpty(card.Name))
                         {
                             Console.WriteLine("Error for: " + link.Url);
                             continue;
