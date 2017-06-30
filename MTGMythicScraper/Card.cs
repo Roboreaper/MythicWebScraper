@@ -11,18 +11,37 @@ namespace MTGMythicScraper
     public class Card : INotifyPropertyChanged
     {
         private string name;
+
         public string Name { get { return name; } set { name = value; NameChanged(); } }
 
+        [Browsable(false)]
         public string set { get; set; }
+        [Browsable(false)]
         public string ImageUrl { get; set; }
+        [Browsable(false)]
         public string color { get; set; }
-        public string manacost { get; set; }
+        [Browsable(false)]
+        public string manacost { get; set; }       
+        [Browsable(false)]
         public int cmc { get; set; }
+
         public string type { get; set; }
         public string pt { get; set; }
         //public int tablerow { get; set; } = 2;
         public string text { get; set; }
-
+        public string manacostAuto
+        {
+            get { return manacost; }
+            set
+            {
+                manacost = value;
+                color = CardScraper.DetermineColor(value);
+                cmc = CardScraper.DetermineCmC(value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("manacost"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("color"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("cmc"));
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         void NameChanged()

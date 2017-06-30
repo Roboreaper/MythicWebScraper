@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -195,7 +196,8 @@ namespace MTGMythicScraper
 
             };
 
-            using (var writer = XmlWriter.Create("cocatrice_" + Set + ".xml", xmlWriterSettings))
+            var path = System.IO.Path.Combine(Application.StartupPath, "cocatrice_" + Set + ".xml");
+            using (var writer = XmlWriter.Create(path, xmlWriterSettings))
             {
                 Console.WriteLine("Creating XML");
 
@@ -222,6 +224,9 @@ namespace MTGMythicScraper
             }
 
             Console.WriteLine("done");
+
+            Process.Start(Application.StartupPath);
+
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

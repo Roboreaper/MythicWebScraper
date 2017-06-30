@@ -112,7 +112,7 @@ namespace MTGMythicScraper
         }
 
         // straightforward method :)
-        private string DetermineColor(string manacost)
+        public static string DetermineColor(string manacost)
         {
             string color = "";
             foreach (char c in manacost)
@@ -143,7 +143,7 @@ namespace MTGMythicScraper
             return string.Join("", color.Distinct());
         }
 
-        private int DetermineCmC(string manacost)
+        public static int DetermineCmC(string manacost)
         {
             int cmc = 0;
             foreach (char c in manacost)
