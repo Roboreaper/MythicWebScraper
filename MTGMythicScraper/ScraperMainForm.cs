@@ -65,8 +65,17 @@ namespace MTGMythicScraper
         }
 
         private void CardChanged(object sender, PropertyChangedEventArgs e)
-        {
-            FillList();
+        {         
+
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => { CardChanged(sender,e); }));
+            }
+            else
+            {
+                if (e.PropertyName == "name")
+                    FillList();
+            }
         }
 
         private async void  GetCards(List<CardLink> links)
@@ -84,8 +93,10 @@ namespace MTGMythicScraper
            {
                var cardCount = links.Count;
                var progress = 0; var temp = 0; var tenth = cardCount / 10;
+               int seq = 0;
                foreach (var link in links)
                {
+                   seq++;
                    if (tokenSource.Token.IsCancellationRequested)
                        break;
 
@@ -99,13 +110,13 @@ namespace MTGMythicScraper
                        {
                            cardPage = client.DownloadString(tempUrl);
 
-                           var card = Cardscaper.Scrape(cardPage, Set,img);
+                           var card = Cardscaper.Scrape(seq,cardPage, Set,img);
                            
                            if (string.IsNullOrEmpty(card.Name))
                            {
                                Console.WriteLine("Error for: " + link.Url);
 
-                               var c = new Card() { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set= Set };
+                               var c = new Card(seq) { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set= Set };
                                Cards.Add(c);
                                TempAddCard(c);
 
@@ -120,7 +131,7 @@ namespace MTGMythicScraper
                    {
                        Console.WriteLine("Timout for Error for: " + link.Url);
 
-                       var c = new Card() { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set = Set };
+                       var c = new Card(seq) { Name = "Error: " + link.Url.Split('/', '.')[1], ImageUrl = img, set = Set };
                        Cards.Add(c);
                        TempAddCard(c);
 
@@ -168,10 +179,16 @@ namespace MTGMythicScraper
 
         private void FillList()
         {
-            propertyGrid.SelectedObject = null;
+            //int selected = (propertyGrid.SelectedObject as Card)?.ID ?? -1;
+
+            //propertyGrid.SelectedObject = null;
+            
             listView1.Items.Clear();
             var ordered = Cards.OrderBy(c => c.Name).Select(c => new ListViewItem(c.Name) { Tag = c }).ToArray();
             listView1.Items.AddRange(ordered);
+
+            //propertyGrid.SelectedObject = ordered.FirstOrDefault(c => (c.Tag as Card).ID == selected).Tag;
+
         }
 
         void UpdateProgressBar()

@@ -19,7 +19,7 @@ namespace MTGMythicScraper
         const string Tagpt        = "<!--P/T-->";
         const string Tagend       = "<!--END CARD TEXT-->";
 
-        public Card Scrape(string page, string set, string img)
+        public Card Scrape(int id, string page, string set, string img)
         {
             string htmlCode = page;
 
@@ -30,7 +30,7 @@ namespace MTGMythicScraper
             HtmlNode table = doc.DocumentNode.Descendants("table").ElementAt(5);
 
             var text = table.InnerText;
-            Card c = new Card();
+            Card c = new Card(id);
             c.set = set;
             c.ImageUrl = img;
 
@@ -88,7 +88,7 @@ namespace MTGMythicScraper
                     card.Name = Regex.Match(temp, @"(?i)^[a-z ,'-_]+").Value;
                     break;
                 case Tagmanacost:
-                    card.manacost = temp;
+                    card.cost = temp;
                     card.cmc = DetermineCmC(temp);
                     card.color = DetermineColor(temp);
                     break;

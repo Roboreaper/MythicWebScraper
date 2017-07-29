@@ -10,9 +10,13 @@ namespace MTGMythicScraper
 {
     public class Card : INotifyPropertyChanged
     {
-        private string name;
+        [Browsable(false)]
+        public int ID { get; private set; }
 
-        public string Name { get { return name; } set { name = value; NameChanged(); } }
+        public Card(int id)
+        {
+            ID = id;
+        }
 
         [Browsable(false)]
         public string set { get; set; }
@@ -21,20 +25,40 @@ namespace MTGMythicScraper
         [Browsable(false)]
         public string color { get; set; }
         [Browsable(false)]
-        public string manacost { get; set; }       
+        public string cost { get; set; }
         [Browsable(false)]
         public int cmc { get; set; }
 
+        [Category("Not Editable")]
+        public string Set { get { return set; }  }
+
+        [Category("Not Editable")]
+        public string Color { get { return color; } }
+
+        [Category("Not Editable")]
+        public string Cost { get { return cost; } }
+
+        [Category("Not Editable")]
+        public int CMC { get { return cmc; } }
+
+
+        private string name;
+        [Category("Editable")]
+        public string Name { get { return name; } set { name = value; NameChanged(); } }
+
+        [Category("Editable")]
         public string type { get; set; }
+        [Category("Editable")]
         public string pt { get; set; }
-        //public int tablerow { get; set; } = 2;
+        [Category("Editable")]
         public string text { get; set; }
-        public string manacostAuto
+        [Category("Editable")]
+        public string manacost
         {
-            get { return manacost; }
+            get { return cost; }
             set
             {
-                manacost = value;
+                cost = value;
                 color = CardScraper.DetermineColor(value);
                 cmc = CardScraper.DetermineCmC(value);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("manacost"));
@@ -51,7 +75,7 @@ namespace MTGMythicScraper
 
         public override string ToString()
         {
-            return $"{manacost} {name}";
+            return $"{cost} {name}";
         }
 
 
@@ -75,8 +99,8 @@ namespace MTGMythicScraper
                     writer.WriteElementString("color", colorId.ToString());
                 }
 
-            if (!string.IsNullOrEmpty(manacost))
-                writer.WriteElementString("manacost", manacost);
+            if (!string.IsNullOrEmpty(cost))
+                writer.WriteElementString("manacost", cost);
 
             if (cmc > 1)
                 writer.WriteElementString("cmc", cmc.ToString());

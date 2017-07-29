@@ -21,108 +21,108 @@ namespace MTGMythicScraper
             (new ScraperMainForm()).ShowDialog();
             return;
 
-            string sourceCode = "";
-            string siteUrl = "http://mythicspoiler.com/";
-            var options = new CommandLineOptions();
-            if(CommandLine.Parser.Default.ParseArguments(args, options) )
-            {             
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
-                {
-                    sourceCode = client.DownloadString("http://mythicspoiler.com/"+ options.Set+"/");
-                }
-            }
-            else
-            {
-                Console.WriteLine(options.GetUsage());
-                var l = Console.ReadLine();
+            //string sourceCode = "";
+            //string siteUrl = "http://mythicspoiler.com/";
+            //var options = new CommandLineOptions();
+            //if(CommandLine.Parser.Default.ParseArguments(args, options) )
+            //{             
+            //    using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+            //    {
+            //        sourceCode = client.DownloadString("http://mythicspoiler.com/"+ options.Set+"/");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(options.GetUsage());
+            //    var l = Console.ReadLine();
 
-                return;
-            }
+            //    return;
+            //}
 
-            LinkScraper scraper = new LinkScraper();
-            var result =scraper.Find(sourceCode);
+            //LinkScraper scraper = new LinkScraper();
+            //var result =scraper.Find(sourceCode);
 
-            Console.WriteLine($"found {result.Count} cards");
-            List<Card> Cards = new List<Card>();
+            //Console.WriteLine($"found {result.Count} cards");
+            //List<Card> Cards = new List<Card>();
 
-            CardScraper cs = new CardScraper();
+            //CardScraper cs = new CardScraper();
 
-            var cardCount = result.Count;
-            var progress = 0; var temp = 0; var tenth = cardCount / 10;
-            foreach (var link in result)
-            {
-                string cardPage = "";
-                string tempUrl = siteUrl + options.Set + "/" + link.Url;
-                try
-                {
-                    using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
-                    {
-                        cardPage = client.DownloadString(tempUrl);
+            //var cardCount = result.Count;
+            //var progress = 0; var temp = 0; var tenth = cardCount / 10;
+            //foreach (var link in result)
+            //{
+            //    string cardPage = "";
+            //    string tempUrl = siteUrl + options.Set + "/" + link.Url;
+            //    try
+            //    {
+            //        using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+            //        {
+            //            cardPage = client.DownloadString(tempUrl);
 
-                        var card = cs.Scrape(cardPage, options.Set, siteUrl + options.Set + "/" + link.ImgUrl);
-                        if (string.IsNullOrEmpty(card.Name))
-                        {
-                            Console.WriteLine("Error for: " + link.Url);
-                            continue;
-                        }
+            //            var card = cs.Scrape(cardPage, options.Set, siteUrl + options.Set + "/" + link.ImgUrl);
+            //            if (string.IsNullOrEmpty(card.Name))
+            //            {
+            //                Console.WriteLine("Error for: " + link.Url);
+            //                continue;
+            //            }
 
-                        Cards.Add(card);
-                    }
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine("Timout for Error for: " + link.Url);
-                }
+            //            Cards.Add(card);
+            //        }
+            //    }
+            //    catch(Exception e)
+            //    {
+            //        Console.WriteLine("Timout for Error for: " + link.Url);
+            //    }
 
-                ++temp;
-                if (temp >= tenth)
-                {
-                    temp = 0;
-                    progress += 10;
-                    Console.WriteLine($"{progress}%...");
-                }
+            //    ++temp;
+            //    if (temp >= tenth)
+            //    {
+            //        temp = 0;
+            //        progress += 10;
+            //        Console.WriteLine($"{progress}%...");
+            //    }
 
 
-            }
+            //}
 
-            Console.WriteLine(Cards.Count);
+            //Console.WriteLine(Cards.Count);
 
-            XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
-            {
-                Indent = true,
-                IndentChars = "\t",
+            //XmlWriterSettings xmlWriterSettings = new XmlWriterSettings()
+            //{
+            //    Indent = true,
+            //    IndentChars = "\t",
                 
-            };
+            //};
 
-            using (var writer = XmlWriter.Create("cocatrice_" + options.Set + ".xml", xmlWriterSettings))
-            {
-                Console.WriteLine("Creating XML");
+            //using (var writer = XmlWriter.Create("cocatrice_" + options.Set + ".xml", xmlWriterSettings))
+            //{
+            //    Console.WriteLine("Creating XML");
 
-                writer.WriteStartDocument();
+            //    writer.WriteStartDocument();
               
-                //writer.WriteStartElement("set");
-                //writer.WriteElementString("longname", "Commander 2016");
-                //writer.WriteElementString("settype", "Commander");
-                //writer.WriteElementString("releasedate", DateTime.Now.ToString("YYYY-MM-dd"));
-                //writer.WriteEndElement();
+            //    //writer.WriteStartElement("set");
+            //    //writer.WriteElementString("longname", "Commander 2016");
+            //    //writer.WriteElementString("settype", "Commander");
+            //    //writer.WriteElementString("releasedate", DateTime.Now.ToString("YYYY-MM-dd"));
+            //    //writer.WriteEndElement();
 
-                writer.WriteStartElement("cards");
+            //    writer.WriteStartElement("cards");
 
-                foreach (var card in Cards)
-                {
-                    card.Serialize(writer);
-                }
+            //    foreach (var card in Cards)
+            //    {
+            //        card.Serialize(writer);
+            //    }
 
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
-            }
+            //    writer.WriteEndElement();
+            //    writer.WriteEndDocument();
+            //}
 
-            Console.WriteLine("done");
-            Console.ReadLine();
+            //Console.WriteLine("done");
+            //Console.ReadLine();
 
         }
 
-        private static Card GetCard(CardLink link, string siteUrl, CommandLineOptions options)
+        private static Card GetCard(CardLink link,int id, string siteUrl, CommandLineOptions options)
         {
             CardScraper cs = new CardScraper();
             string cardPage = "";
@@ -131,7 +131,7 @@ namespace MTGMythicScraper
             {
                 cardPage = client.DownloadString(tempUrl);
 
-                return cs.Scrape(cardPage, options.Set, siteUrl + "/" + link.ImgUrl);               
+                return cs.Scrape(id,cardPage, options.Set, siteUrl + "/" + link.ImgUrl);               
             }
         }
       
