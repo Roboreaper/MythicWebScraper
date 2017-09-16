@@ -75,6 +75,21 @@ namespace MTGMythicScraper
             {
                 if (e.PropertyName == "name")
                     FillList();
+
+                if (e.PropertyName == "manacost")
+                {
+                    var tag = listView1.SelectedItems[0]?.Tag;
+
+                    propertyGrid.SelectedObject = null;
+                    if (tag == null)
+                        return;
+
+                    if (tag is Card)
+                    {
+                        propertyGrid.SelectedObject = tag;
+                        pictureBox1.ImageLocation = ((Card)tag).ImageUrl;
+                    }
+                }
             }
         }
 
