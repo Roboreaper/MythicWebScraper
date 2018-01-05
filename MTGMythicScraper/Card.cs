@@ -58,9 +58,9 @@ namespace MTGMythicScraper
             get { return cost; }
             set
             {
-                cost = value;
-                color = CardScraper.DetermineColor(value);
-                cmc = CardScraper.DetermineCmC(value);
+                cost = value.ToUpper();
+                color = CardScraper.DetermineColor(cost);
+                cmc = CardScraper.DetermineCmC(cost);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("manacost"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("color"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("cmc"));
