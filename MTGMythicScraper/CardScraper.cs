@@ -112,10 +112,11 @@ namespace MTGMythicScraper
         }
 
         // straightforward method :)
-        public static string DetermineColor(string manacost)
+        public static string DetermineColor(string costcolor)
         {
             string color = "";
-            foreach (char c in manacost)
+            var colormanacost = costcolor.ToUpper();
+            foreach (char c in colormanacost)
             {
                 
                 switch(c)
@@ -143,10 +144,10 @@ namespace MTGMythicScraper
             return string.Join("", color.Distinct());
         }
 
-        public static int DetermineCmC(string manacost)
+        public static int DetermineCmC(string costCMC)
         {
             int cmc = 0;
-            foreach (char c in manacost)
+            foreach (char c in costCMC)
             {
                 int temp = 0;
                 if(int.TryParse(c.ToString(), out temp))
